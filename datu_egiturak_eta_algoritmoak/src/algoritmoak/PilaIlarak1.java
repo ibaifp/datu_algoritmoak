@@ -10,7 +10,7 @@ public class PilaIlarak1 {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		ariketa3();
+		ariketa5();
 	}
 	
 	private static void ariketa1() {
@@ -99,5 +99,106 @@ public class PilaIlarak1 {
 		}
 		sc.close();
 	}
+	
+	private static void ariketa4() {
+		/*
+		 * 4- Ilara bateko lehenengo N elementuak irauli: zenbaki osoz osatutako 
+		 * ilara bat eta N balio bat emanda, ilarako lehenengo N elementuak bakarrik irauli. Gainerako elementuek 
+		 * hasierako hurrenkera mantendu behar dute. Horretarako, pila bat erabili egitura laguntzaile gisa.
+		 */
+		
+		Scanner sc = new Scanner(System.in);
+		
+		Queue<Integer> ilara = new LinkedList<Integer>();
+		Queue<Integer> ilaraAux = new LinkedList<Integer>();
+		ilaraAux.offer(2);ilaraAux.offer(99);ilaraAux.offer(23);ilaraAux.offer(45);ilaraAux.offer(13);ilaraAux.offer(87);ilaraAux.offer(59);
+		
+		System.out.println("Ilarako zenbakiak: " + ilaraAux.toString());
+		
+		System.out.print("Zenbat zenbaki nahi duzu buelta emon? ");
+		int n = Integer.parseInt(sc.nextLine());
+		
+		Deque<Integer> pilaAux = new ArrayDeque<Integer>();
+		
+		for(int i = 0; i < n; i++) {
+			pilaAux.push(ilaraAux.poll());
+		}
+		
+		System.out.println("Pilako zenbakiak: " + pilaAux.toString());
+		
+		while(!pilaAux.isEmpty()) {
+			ilara.offer(pilaAux.pop());
+		}
+		
+		ilara.addAll(ilaraAux);
+		System.out.println("Ilara emaitza: " + ilara.toString());
+		sc.close();
+	}
+	
+	private static void ariketa5() {
+		/*
+		 * 5- Pila eta ilara ordenatuta mantendu: teklatutik zenbaki osoak irakurri 0 sartu arte. 
+		 * Sartutako zenbaki bakoitza aldi berean ilara batean eta pila batean gorde. Ilarako elementuak 
+		 * txikienetik handienera ordenatuta mantendu, eta pilako elementuak handienetik txikienera, 
+		 * goiko aldetik beheko aldera. 0 balioa amaitzeko bakarrik erabiliko da eta ez da egituretan gordeko. 
+		 * Pila eta ilarak bakarrik erabil daitezke; ezin dira ArrayList, 
+		 * Collections.sort(), Arrays.sort() edo antzeko egiturak eta ordenazio-metodoak erabili.
+		 */
+		
+		Scanner sc = new Scanner(System.in);
+		
+		Queue<Integer> ilara = new LinkedList<Integer>();
+		Deque<Integer> pila = new ArrayDeque<Integer>();
+		
+		boolean bukatuta = false;
+		
+		do {
+			System.out.print("Sartu zenbaki bat: ");
+			int num = sc.nextInt();
+			
+			if(num == 0) {
+				bukatuta = true;
+			}else {
+				ilara = txikitikHandienera(ilara, num);
+			}
+			
+		}while(!bukatuta);
+		
+		pila = ilaratikPilara(ilara, pila);
+		
+		System.out.println("Ilarako zenbakiak txikitik handienera: " + ilara.toString());
+		System.out.println("pilako zenbakiak handienetik txikietara : " + pila.toString());
+		sc.close();
+		
+	}
+	
+	private static Queue<Integer> txikitikHandienera(Queue<Integer> ilara, int num) {
+		
+		Queue<Integer> ilaraAux = new LinkedList<Integer>();
+		boolean ordenatuta = false;
+		
+		if(!ilara.isEmpty()) {
+			for(int i : ilara) {
+				if(num <= i && !ordenatuta) {
+					ilaraAux.offer(num);
+					ordenatuta = true;
+				}
+				ilaraAux.offer(i);
+			}
+			
+			if(!ordenatuta) ilaraAux.offer(num);
+		}else {
+			ilaraAux.offer(num);
+		}
+		return ilaraAux;
+	}
 
+	private static Deque<Integer> ilaratikPilara(Queue<Integer> ilara, Deque<Integer> pila) {
+			
+			for(int i : ilara) {
+				pila.push(i);
+			}
+			
+			return pila;
+		}
 }
